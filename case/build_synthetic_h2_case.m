@@ -37,14 +37,14 @@ h2case.pipeline.count = numel(h2case.pipeline.names);
 h2case.pipeline.from_node = [1; 2];
 h2case.pipeline.to_node = [3; 3];
 h2case.pipeline.length_km = [165; 230];
-h2case.pipeline.diameter_m = [0.90; 1.20];
+h2case.pipeline.diameter_m = [0.30; 0.30];
 h2case.pipeline.roughness_m = [4.572e-5; 4.572e-5]; % X52 steel, 0.04572 mm
 h2case.pipeline.heat_transfer_w_m2_k = ...
     params.pipeline.default_heat_transfer_w_m2_k * ones(h2case.pipeline.count, 1);
-h2case.pipeline.design_flow_kg_s = [10.5; 18.5];
+h2case.pipeline.design_flow_kg_s = [3.6; 2.9];
 h2case.pipeline.source_pressure_bar = [30; 30];
-h2case.pipeline.upstream_pressure_max_bar = [80; 80];
-h2case.pipeline.downstream_pressure_min_bar = [40; 40];
+h2case.pipeline.upstream_pressure_max_bar = [69; 69];
+h2case.pipeline.downstream_pressure_min_bar = [49; 49];
 
 %% Hydrogen demand
 h2case.demand.node = 3;

@@ -40,11 +40,11 @@ for l = 1:nPipe
     m_ref_kg_s = max(1e-6, params.pipeline.reference_flow_fraction * ...
         h2case.pipeline.design_flow_kg_s(l));
 
-    p_rep_pa = 0.5 * (bar_to_pa(h2case.pipeline.upstream_pressure_max_bar(l)) + ...
-        bar_to_pa(h2case.pipeline.downstream_pressure_min_bar(l)));
-    pmax_pa = bar_to_pa(h2case.pipeline.upstream_pressure_max_bar(l));
-    pmin_pa = bar_to_pa(h2case.pipeline.downstream_pressure_min_bar(l));
-    psuction_pa = bar_to_pa(h2case.pipeline.source_pressure_bar(l));
+    p_rep_pa = 0.5 * (h2case.pipeline.upstream_pressure_max_bar(l) + ...
+        h2case.pipeline.downstream_pressure_min_bar(l)) * 1e5;
+    pmax_pa = h2case.pipeline.upstream_pressure_max_bar(l) * 1e5;
+    pmin_pa = h2case.pipeline.downstream_pressure_min_bar(l) * 1e5;
+    psuction_pa = h2case.pipeline.source_pressure_bar(l) * 1e5;
 
     for t = 1:T
         theta_s_k = env.theta_seabed_c(l, t) + 273.15;
@@ -87,6 +87,16 @@ for l = 1:nPipe
         pipe.compressor_specific_energy_kwh_kg(l, t) = e_kwh_kg;
         pipe.pressure_ratio_ref(l, t) = ratio;
     end
+end
+
+function mu = hydrogen_viscosity_sutherland(params, T_k)
+%HYDROGEN_VISCOSITY_SUTHERLAND Temperature-dependent H2 viscosity.
+
+mu0 = params.h2.viscosity_mu0_pa_s;
+T0 = params.h2.viscosity_T0_k;
+C = params.h2.sutherland_C_k;
+mu = mu0 * (T_k / T0)^(3/2) * (T0 + C) / (T_k + C);
+
 end
 
 pipe.static_temperature_c = max(env.theta_seabed_c, [], 2);

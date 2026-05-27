@@ -21,8 +21,8 @@ switch mode
 
     case "aftercooler"
         T_comp_in_k = params.compressor.inlet_temperature_c + 273.15;
-        p_suction_pa = bar_to_pa(h2case.pipeline.source_pressure_bar(l));
-        p_discharge_pa = bar_to_pa(h2case.pipeline.upstream_pressure_max_bar(l));
+        p_suction_pa = h2case.pipeline.source_pressure_bar(l) * 1e5;
+        p_discharge_pa = h2case.pipeline.upstream_pressure_max_bar(l) * 1e5;
         T_comp_out_k = compressor_outlet_temperature(params, T_comp_in_k, ...
             p_suction_pa, p_discharge_pa);
         T_in_k = min(T_comp_out_k, params.pipeline.aftercooler_setpoint_c + 273.15);
@@ -31,8 +31,8 @@ switch mode
 
     case "compressor_outlet"
         T_comp_in_k = params.compressor.inlet_temperature_c + 273.15;
-        p_suction_pa = bar_to_pa(h2case.pipeline.source_pressure_bar(l));
-        p_discharge_pa = bar_to_pa(h2case.pipeline.upstream_pressure_max_bar(l));
+        p_suction_pa = h2case.pipeline.source_pressure_bar(l) * 1e5;
+        p_discharge_pa = h2case.pipeline.upstream_pressure_max_bar(l) * 1e5;
         T_in_k = compressor_outlet_temperature(params, T_comp_in_k, ...
             p_suction_pa, p_discharge_pa);
         meta.mode = mode;
@@ -44,3 +44,14 @@ end
 
 end
 
+function T_out_k = compressor_outlet_temperature(params, T_in_k, p_in_pa, p_out_pa)
+%COMPRESSOR_OUTLET_TEMPERATURE Simplified isentropic outlet temperature.
+
+k = params.h2.kappa;
+eta_iso = params.compressor.isentropic_efficiency;
+ratio = max(p_out_pa / max(p_in_pa, 1), params.compressor.pressure_ratio_min);
+ratio = min(ratio, params.compressor.pressure_ratio_max);
+
+T_out_k = T_in_k * (1 + (ratio^((k - 1) / k) - 1) / eta_iso);
+
+end

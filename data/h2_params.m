@@ -7,7 +7,7 @@ function params = h2_params()
 
 %% Run metadata
 params.meta.project = 'IEEE PES GM 2027 offshore hydrogen';
-params.meta.stage = 'v1_synthetic_temperature_driven_pipeline_constraints';
+params.meta.stage = 'v2_bottleneck_synthetic_temperature_driven_pipeline_constraints';
 params.meta.T = 24;
 params.meta.dt_h = 1.0;
 
@@ -38,8 +38,8 @@ params.h2.viscosity_T0_k = 293.15;
 params.h2.sutherland_C_k = 72.0;
 
 %% Pipeline and thermal assumptions
-params.pipeline.default_heat_transfer_w_m2_k = 5.0;
-params.pipeline.reference_flow_fraction = 0.60;
+params.pipeline.default_heat_transfer_w_m2_k = 1.0;
+params.pipeline.reference_flow_fraction = 0.80;
 params.pipeline.static_temperature_rule = 'max_seabed_temperature';
 params.pipeline.static_reference_flow_rule = 'design_flow_fraction';
 params.pipeline.allow_reverse_flow = false;
@@ -50,6 +50,8 @@ params.pipeline.temperature_average_method = 'length_average';
 params.pipeline.temperature_average_sensitivity_methods = ...
     ["length_average", "endpoint_average"];
 params.pipeline.inlet_temperature_sensitivity_c = [35, 60, 90];
+params.pipeline.heat_transfer_sensitivity_w_m2_k = [0.5, 1.0, 2.0, 5.0];
+params.pipeline.reference_flow_fraction_sensitivity = [0.5, 0.8, 1.0];
 
 % Conservative bounds for sanity checking.
 params.range.seabed_temperature_c = [-2, 25];
@@ -65,7 +67,7 @@ params.compressor.motor_sizing_factor = 1.10;
 params.compressor.pressure_ratio_min = 1.0;
 params.compressor.pressure_ratio_max = 3.0;
 params.compressor.inlet_temperature_source = 'pipeline_gas_temperature';
-params.compressor.inlet_temperature_c = 10.0;
+params.compressor.inlet_temperature_c = 11.67;
 
 %% Electrolyser, storage, and costs
 params.electrolyser.specific_energy_kwh_per_kg = 50.0;
@@ -86,7 +88,8 @@ params.solver.verbose = false;
 %% Interface for future real North Sea data
 params.case.source = 'synthetic';
 params.case.future_loader = 'build_north_sea_h2_case';
-params.environment.source = 'synthetic_seasonal_representative_day';
+params.environment.source = 'synthetic_stress_seasonal_extreme';
+params.environment.synthetic_profile_mode = 'stress_seasonal_extreme';
 params.environment.future_loader = 'load_cmems_seabed_temperature_profile';
 
 end
