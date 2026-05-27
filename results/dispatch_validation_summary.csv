@@ -1,0 +1,4 @@
+scenario,status,max_balance_residual,max_bound_violation
+static,ok,7.27595761418343e-12,0
+partial,ok,7.27595761418343e-12,0
+dynamic,ok,7.27595761418343e-12,0

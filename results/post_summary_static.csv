@@ -1,0 +1,2 @@
+scenario,objective,compressor_energy_mwh,external_supply_kg,wind_curtailment_mwh,unserved_demand_kg,pipeline_binding_hours
+static,5662306.16389672,56.8616132841547,707219.654354248,464.982717712394,0,0
